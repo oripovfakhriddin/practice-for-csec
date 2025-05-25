@@ -1,0 +1,109 @@
+main {
+  background: #2f4053;
+  perspective: 1000px;
+  height: 90vh;
+  overflow: hidden;
+}
+ .container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(150deg) rotateY(48deg);
+  width: 306px;
+  height: 306px;
+  transform-style: preserve-3d;
+  transition: all 1s ease;
+}
+.all-content {
+  transform-style: preserve-3d;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 465px;
+  height: 552px;
+}
+.item {
+  width: 300px;
+  height: 300px;
+  background: #253242;
+  position: absolute;
+  transition: all 1s ease;
+  opacity: 0.6;
+  overflow: hidden;
+}
+.item2 {
+  background-color: #5f3bfa;
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  transition: all 1s ease;
+  opacity: 0.6;
+}
+.front {
+  transform: translate3d(0, 0, 150px);
+}
+.back {
+  transform: translate3d(0, 0, -150px) rotateY(180deg);
+}
+.left {
+  transform: translate3d(-150px, 0, 0) rotateY(-90deg);
+}
+.right {
+  transform: translate3d(150px, 0, 0) rotateY(90deg);
+}
+.top {
+  transform: translate3d(0, -150px, 0) rotateX(90deg);
+}
+.bottom {
+  transform: translate3d(0, 150px, 0) rotateX(-90deg);
+}
+.size {
+  height: 3px;
+  animation-name: cub;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+}
+@keyframes cub {
+  0% {
+    height: 3px;
+  }
+  50% {
+    height: 300px;
+  }
+  100% {
+    height: 3px;
+  }
+}
+.size1 {
+  transform: translate3d(0, -148px, 0) rotateX(-90deg);
+  animation-name: cub-top;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+}
+@keyframes cub-top {
+  0% {
+    transform: translate3d(0, -148px, 0) rotateX(-90deg);
+  }
+  50% {
+    transform: translate3d(0, 149px, 0) rotateX(-90deg);
+  }
+  100% {
+    transform: translate3d(0, -148px, 0) rotateX(-90deg);
+  }
+}
+
+.top-size {
+  box-shadow: 40px -30px 50px rgb(0 0 0);
+}
+.container:hover {
+  top: 50%;
+  left: 50%;
+  height: 260px;
+  transform: translate(-50%, -50%) rotateX(150deg) rotateY(48deg);
+}
+.all-content:hover .top-size {
+  box-shadow: 96px -83px 50px rgb(0 0 0);
+}
