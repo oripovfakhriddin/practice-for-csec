@@ -1,72 +1,12 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import Hamburger from "../../assets/icons/hamburger";
+import React, { Fragment, useEffect, useState } from "react";
 import ThemeToggle from "../../components/theme";
-import Logo from "/pictures/logo-login-background.png";
+import Hamburger from "../../assets/icons/hamburger";
 import Aos from "aos";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import * as THREE from "three";
-import { FontLoader } from "three/addons/loaders/FontLoader.js";
-import helvetiker from "three/examples/fonts/helvetiker_regular.typeface.json";
+import Logo from "/pictures/logo-login-background.png";
+import Slider from "react-slick";
+import "./style.css";
 
-function Text3D() {
-  const groupRef = useRef();
-
-  useEffect(() => {
-    const font = new FontLoader().parse(helvetiker);
-    const message = " Oripov Faxriddin";
-    const color = 0x006699;
-
-    const matDark = new THREE.LineBasicMaterial({
-      color,
-      side: THREE.DoubleSide,
-    });
-    const matLite = new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 0.4,
-      side: THREE.DoubleSide,
-    });
-
-    const shapes = font.generateShapes(message, 100);
-    const geometry = new THREE.ShapeGeometry(shapes);
-    geometry.computeBoundingBox();
-
-    const xMid =
-      -0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
-    geometry.translate(xMid, 0, 0);
-
-    const text = new THREE.Mesh(geometry, matLite);
-    text.position.z = -150;
-    groupRef.current.add(text);
-
-    const holeShapes = [];
-    for (let i = 0; i < shapes.length; i++) {
-      const shape = shapes[i];
-      if (shape.holes && shape.holes.length > 0) {
-        for (let j = 0; j < shape.holes.length; j++) {
-          holeShapes.push(shape.holes[j]);
-        }
-      }
-    }
-
-    shapes.push(...holeShapes);
-
-    for (let i = 0; i < shapes.length; i++) {
-      const shape = shapes[i];
-      const points = shape.getPoints();
-      const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
-      lineGeometry.translate(xMid, 0, 0);
-
-      const line = new THREE.Line(lineGeometry, matDark);
-      groupRef.current.add(line);
-    }
-  }, []);
-
-  return <group ref={groupRef} />;
-}
-
-const Text3DPage = () => {
+const CarouselPage = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -76,6 +16,17 @@ const Text3DPage = () => {
       once: true,
     });
   }, []);
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 1000,
+    autoplaySpeed: 0,
+    cssEase: "ease",
+  };
 
   return (
     <Fragment>
@@ -129,12 +80,13 @@ const Text3DPage = () => {
                 </li>
                 <li>
                   <a
-                    href="text-3d"
-                    className="block py-2 px-3  rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:text-blue-700 md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 md:dark:text-blue-500 dark:hover:text-white md:dark:hover:bg-transparent"
+                    href="/text-3d"
+                    className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                   >
-                    Text-3D
+                    Text - 3D
                   </a>
                 </li>
+
                 <li>
                   <a
                     href="/cub-3d"
@@ -143,10 +95,11 @@ const Text3DPage = () => {
                     Kub - 3D
                   </a>
                 </li>
+
                 <li>
                   <a
-                    href="/carousel"
-                    className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    href="text-3d"
+                    className="block py-2 px-3  rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:text-blue-700 md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 md:dark:text-blue-500 dark:hover:text-white md:dark:hover:bg-transparent"
                   >
                     Karusel
                   </a>
@@ -178,17 +131,62 @@ const Text3DPage = () => {
           </div>
         </nav>
       </header>
-      <main >
-        <div style={{ width: "100vw", height: "100vh" }}>
-          <Canvas camera={{ position: [0, -400, 600], fov: 45 }}>
-            <ambientLight />
-            <Text3D />
-            <OrbitControls />
-          </Canvas>
+      <main data-aos="flip-down" className="flex flex-col justify-center">
+        <div className="slider-container">
+          <Slider {...settings} className="flex gap-5">
+            <div>
+              <a href="https://csec.uz/uz/" target="_blank" rel="noreferrer">
+                <img
+                  src="https://csec.uz/upload/CPriority/5d5/csec-logo-new2.png"
+                  alt="Kiberxavfsizlik markazi"
+                />
+              </a>
+            </div>
+            <div>
+              <a href="https://csec.uz/uz/" target="_blank" rel="noreferrer">
+                <img
+                  src="https://csec.uz/upload/CPriority/5d5/csec-logo-new2.png"
+                  alt="Kiberxavfsizlik markazi"
+                />
+              </a>
+            </div>
+            <div>
+              <a href="https://csec.uz/uz/" target="_blank" rel="noreferrer">
+                <img
+                  src="https://csec.uz/upload/CPriority/5d5/csec-logo-new2.png"
+                  alt="Kiberxavfsizlik markazi"
+                />
+              </a>
+            </div>
+            <div>
+              <a href="https://csec.uz/uz/" target="_blank" rel="noreferrer">
+                <img
+                  src="https://csec.uz/upload/CPriority/5d5/csec-logo-new2.png"
+                  alt="Kiberxavfsizlik markazi"
+                />
+              </a>
+            </div>
+            <div>
+              <a href="https://csec.uz/uz/" target="_blank" rel="noreferrer">
+                <img
+                  src="https://csec.uz/upload/CPriority/5d5/csec-logo-new2.png"
+                  alt="Kiberxavfsizlik markazi"
+                />
+              </a>
+            </div>
+            <div>
+              <a href="https://csec.uz/uz/" target="_blank" rel="noreferrer">
+                <img
+                  src="https://csec.uz/upload/CPriority/5d5/csec-logo-new2.png"
+                  alt="Kiberxavfsizlik markazi"
+                />
+              </a>
+            </div>
+          </Slider>
         </div>
       </main>
     </Fragment>
   );
 };
 
-export default Text3DPage;
+export default CarouselPage;
