@@ -1,11 +1,72 @@
-import React, { Fragment, useEffect, useState } from "react";
-import Logo from "/pictures/logo-login-background.png";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import Hamburger from "../../assets/icons/hamburger";
 import ThemeToggle from "../../components/theme";
-import "./style.css";
+import Logo from "/pictures/logo-login-background.png";
 import Aos from "aos";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import * as THREE from "three";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
+import helvetiker from "three/examples/fonts/helvetiker_regular.typeface.json";
 
-const HomePage = () => {
+function Text3D() {
+  const groupRef = useRef();
+
+  useEffect(() => {
+    const font = new FontLoader().parse(helvetiker);
+    const message = " Oripov Faxriddin";
+    const color = 0x006699;
+
+    const matDark = new THREE.LineBasicMaterial({
+      color,
+      side: THREE.DoubleSide,
+    });
+    const matLite = new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: 0.4,
+      side: THREE.DoubleSide,
+    });
+
+    const shapes = font.generateShapes(message, 100);
+    const geometry = new THREE.ShapeGeometry(shapes);
+    geometry.computeBoundingBox();
+
+    const xMid =
+      -0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+    geometry.translate(xMid, 0, 0);
+
+    const text = new THREE.Mesh(geometry, matLite);
+    text.position.z = -150;
+    groupRef.current.add(text);
+
+    const holeShapes = [];
+    for (let i = 0; i < shapes.length; i++) {
+      const shape = shapes[i];
+      if (shape.holes && shape.holes.length > 0) {
+        for (let j = 0; j < shape.holes.length; j++) {
+          holeShapes.push(shape.holes[j]);
+        }
+      }
+    }
+
+    shapes.push(...holeShapes);
+
+    for (let i = 0; i < shapes.length; i++) {
+      const shape = shapes[i];
+      const points = shape.getPoints();
+      const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+      lineGeometry.translate(xMid, 0, 0);
+
+      const line = new THREE.Line(lineGeometry, matDark);
+      groupRef.current.add(line);
+    }
+  }, []);
+
+  return <group ref={groupRef} />;
+}
+
+const Text3DPage = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -59,8 +120,8 @@ const HomePage = () => {
               <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 <li>
                   <a
-                    href="#"
-                    className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+                    href="/"
+                    className="block py-2 px-3  text-gray-900  rounded-sm md:bg-transparent  md:p-0 dark:text-white "
                     aria-current="page"
                   >
                     Bosh sahifa - 3D
@@ -68,10 +129,10 @@ const HomePage = () => {
                 </li>
                 <li>
                   <a
-                    href="/text-3d"
-                    className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    href="text-3d"
+                    className="block py-2 px-3  rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:text-blue-700 md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 md:dark:text-blue-500 dark:hover:text-white md:dark:hover:bg-transparent"
                   >
-                    Text - 3D
+                    Text-3D
                   </a>
                 </li>
                 <li>
@@ -126,25 +187,16 @@ const HomePage = () => {
         </nav>
       </header>
       <main>
-        <div className="all-content">
-          <div className="container">
-            <div className="item front"></div>
-            <div className="item back"></div>
-            <div className="item top"></div>
-            <div className="item bottom"></div>
-            <div className="item left"></div>
-            <div className="item right"></div>
-            <div className="item2 front size"></div>
-            <div className="item2 back size"></div>
-            <div className="item2 top top-size"></div>
-            <div className="item2 bottom size1"></div>
-            <div className="item2 left size"></div>
-            <div className="item2 right size"></div>
-          </div>
+        <div style={{ width: "100vw", height: "100vh" }}>
+          <Canvas camera={{ position: [0, -400, 600], fov: 45 }}>
+            <ambientLight />
+            <Text3D />
+            <OrbitControls />
+          </Canvas>
         </div>
       </main>
     </Fragment>
   );
 };
 
-export default HomePage;
+export default Text3DPage;

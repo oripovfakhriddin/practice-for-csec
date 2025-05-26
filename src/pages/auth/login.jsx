@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,6 +13,7 @@ import loginSchema from "../../schema/login";
 import { TOKEN } from "../../constants";
 import { AuthContext } from "../../context/auth";
 import { toast } from "react-toastify";
+import Aos from "aos";
 
 const LoginPage = () => {
   const { setIsAuthenticated } = useContext(AuthContext);
@@ -25,6 +26,14 @@ const LoginPage = () => {
 
   const [isPasswordToogle, setIsPasswordToogle] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    Aos.init({
+      duration: 700,
+      easing: "ease-in",
+      once: true,
+    });
+  }, []);
 
   const onSubmit = async (values) => {
     try {
@@ -49,10 +58,20 @@ const LoginPage = () => {
         </div>
         <div className="flex items-center justify-between h-full w-full">
           <div className="md:flex items-center hidden  justify-center relative h-full w-1/2 bg-black">
-            <img className="w-3/4" src={LoginImg} alt="img for login" />
+            <img
+              data-aos="fade-down"
+              data-aos-duration="1500"
+              className="w-3/4"
+              src={LoginImg}
+              alt="img for login"
+            />
           </div>
           <div className="flex items-center justify-center relative  md:w-1/2 w-full h-full p-10 dark:bg-gray-800">
-            <div className="md:w-[330px] ">
+            <div
+              data-aos="fade-up"
+              data-aos-duration="1500"
+              className="md:w-[330px] "
+            >
               <div className="flex justify-center items-center flex-col mb-6">
                 <h1 className="text-xs font-semibold text-center mb-3 w-72 dark:text-white">
                   MUHAMMAD AL-XORAZMIY NOMIDAGI TOSHKENT AXBOROT TEXNOLOGIYALARI
