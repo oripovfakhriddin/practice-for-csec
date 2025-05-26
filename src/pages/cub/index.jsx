@@ -231,7 +231,6 @@ const Cub3DPage = () => {
                     Karusel
                   </a>
                 </li>
-                
               </ul>
             </div>
             {!isOpen ? (
